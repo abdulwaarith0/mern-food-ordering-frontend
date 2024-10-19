@@ -1,3 +1,3 @@
-export { Button } from "./button";
-export { Separator } from "./separator";
-export { Sheet } from "./sheet";
+export * from "./button";
+export * from "./separator";
+export * from "./sheet";
