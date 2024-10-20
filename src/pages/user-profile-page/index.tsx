@@ -1,9 +1,14 @@
 import { UserProfileForm } from "@/forms";
+import { useUpdateMyUser } from "@/hooks";
 
 
 const UserProfilePage = () => {
+    const { updateUser, isLoading } = useUpdateMyUser();
     return (
-        <UserProfileForm />
+        <UserProfileForm
+            onSave={updateUser}
+            isLoading={isLoading}
+        />
     )
 }
 
