@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import { API_BASE_URL } from "../constants";
 import { ISector, IResponseData } from "../types";
 import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'sonner';
 
 export const useCreateMyUser = () => {
     const { getAccessTokenSilently } = useAuth0();
@@ -67,14 +68,22 @@ export const useUpdateMyUser = () => {
 
             const data: IResponseData<ISector> = await response.json();
             return data;
-            
+
         } catch (error: any) {
             console.error("Error updating user:", error);
             throw error;
         }
     }, []);
 
-    const { mutateAsync: updateUser, isLoading, isError, isSuccess, reset } = useMutation(updateMyUserRequest);
+    const { mutateAsync: updateUser, isLoading, isError, error, isSuccess, reset } = useMutation(updateMyUserRequest);
 
-    return { updateUser, isLoading, isError, isSuccess, reset };
+    if (isSuccess) {
+        toast.success("User profile updated successfully");
+    }
+    if (error) {
+        toast.error(error.toString());
+        reset();
+    }
+
+    return { updateUser, isLoading, isError, error, isSuccess, reset };
 }
