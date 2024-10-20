@@ -6,3 +6,4 @@ export { default as Hero } from "./hero";
 export { default as Footer } from "./footer";
 export { default as UsernameMenu } from "./username";
 export { default as MobileNavLinks } from "./mobileNavLinks";
+export { default as LoadingButton } from "./loading";
