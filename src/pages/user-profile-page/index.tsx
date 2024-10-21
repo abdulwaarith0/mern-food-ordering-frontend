@@ -10,7 +10,9 @@ const UserProfilePage = () => {
     const navigate = useNavigate();
 
     if (isGetting) {
-        return <span>Loading...</span>;
+        return <span className="text-2xl font-bold ">
+            Loading...
+        </span>;
     }
 
     if (!currentUser) {
