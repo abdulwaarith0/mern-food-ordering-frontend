@@ -3,9 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormDescription, FormField, FormItem, FormLabel, FormControl, Input, FormMessage, Button } from "@/components";
 import { LoadingButton } from "@/components";
-import { ISector } from "@/types";
 import { useEffect } from "react";
-
+import { User } from "@/types";
 
 const formSchema = z.object({
     email: z.string().optional(),
@@ -18,7 +17,7 @@ const formSchema = z.object({
 type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
-    currentUser: ISector;
+    currentUser: User;
     onSave: (userProfileData: UserFormData) => void;
     isLoading: boolean;
 }

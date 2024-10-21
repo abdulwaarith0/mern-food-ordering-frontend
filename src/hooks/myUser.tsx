@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery } from "react-query";
 import { API_BASE_URL } from "../constants";
-import { ISector, IResponseData } from "../types";
+import { ISector, IResponseData, User } from "../types";
 import { useAuth0 } from '@auth0/auth0-react';
 import { toast } from 'sonner';
 
@@ -47,7 +47,7 @@ export const useCreateMyUser = () => {
 export const useGetMyUser = () => {
     const { getAccessTokenSilently } = useAuth0();
 
-    const getMyUserRequest = useCallback(async (): Promise<ISector> => {
+    const getMyUserRequest = useCallback(async (): Promise<User> => {
         try {
             const accessToken = await getAccessTokenSilently();
 
