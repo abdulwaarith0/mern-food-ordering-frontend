@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { API_BASE_URL } from "../constants";
 import { ISector, IResponseData } from "../types";
 import { useAuth0 } from '@auth0/auth0-react';
 import { toast } from 'sonner';
 
+
+
+// Create a new user
 export const useCreateMyUser = () => {
     const { getAccessTokenSilently } = useAuth0();
 
@@ -39,6 +42,44 @@ export const useCreateMyUser = () => {
     return { createUser, isLoading, isError, isSuccess };
 };
 
+
+// Get current user
+export const useGetMyUser = () => {
+    const { getAccessTokenSilently } = useAuth0();
+
+    const getMyUserRequest = useCallback(async (): Promise<ISector> => {
+        try {
+            const accessToken = await getAccessTokenSilently();
+
+            const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const result = await response.json();
+            return result.data;
+
+        } catch (error: any) {
+            console.error("Error fetching user:", error);
+            throw error;
+        }
+    }, []);
+
+    const { data: currentUser, isLoading, error } = useQuery("fetchCurrentUser", getMyUserRequest);
+
+    if (error) {
+        toast.error(error.toString());
+    }
+
+    return { currentUser, isLoading, error };
+};
+
+
+
+// Update current user
 type updateMyUserRequest = {
     name: string;
     addressLine1: string;

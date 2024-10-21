@@ -1,5 +1,5 @@
 export interface ISector {
-	auth0Id: string;
+	_id: string;
 	email: string;
 	name: string;
 	addressLine1: string;

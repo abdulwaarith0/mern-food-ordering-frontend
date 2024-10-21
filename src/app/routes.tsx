@@ -13,7 +13,8 @@ const AppRoutes = () => {
                     <Home />
                 </Layout>}
             />
-            <Route path="/auth-callback" element={<AuthCallback />} />
+            <Route path="/auth-callback"
+                element={<AuthCallback />} />
             <Route
                 path="/user-profile"
                 element=
