@@ -58,8 +58,8 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
     const onSubmit = (_formDataJson: restaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
         const formData = new FormData();
-        console.log("Image File Data:", _formDataJson.imageFile);
-        console.log("Type of Image File:", typeof _formDataJson.imageFile);
+        console.log("onSubmit called:", _formDataJson);
+
 
         formData.append("restaurantName", _formDataJson.restaurantName);
         formData.append("city", _formDataJson.city);

@@ -6,9 +6,11 @@ const ImageSection = () => {
     const { control, setValue } = useFormContext();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("file input changed:", event.target.files);
         const files = event.target.files;
         if (files && files[0]) {
             setValue("imageFile", files[0], { shouldValidate: true });
+            console.log("file set in form:", files[0]);
         }
     };
 
