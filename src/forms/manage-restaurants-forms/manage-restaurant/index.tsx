@@ -57,8 +57,10 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
 
     const onSubmit = (_formDataJson: restaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
+        console.log("onSubmit called with data:", _formDataJson);
+        console.log("Type of imageFile:", _formDataJson.imageFile instanceof File ? "File" : "Not a File");
+        console.log("Image File Details:", _formDataJson.imageFile);
         const formData = new FormData();
-        console.log("onSubmit called:", _formDataJson);
 
 
         formData.append("restaurantName", _formDataJson.restaurantName);
@@ -77,7 +79,7 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
             );
         });
 
-        if (_formDataJson.imageFile && _formDataJson.imageFile instanceof File) {
+        if (_formDataJson.imageFile instanceof File) {
             formData.append("imageFile", _formDataJson.imageFile);
         } else {
             console.error("Submitted data for imageFile is not an instance of File");
