@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/auth';
 import { ManageRestaurantForm } from '@/forms';
 
 
+
 const AppRoutes = () => {
     return (
         <Routes>
@@ -23,9 +24,11 @@ const AppRoutes = () => {
                 <Route
                     path="/user-profile"
                     element=
-                    {<Layout showHero={false}>
-                        <UserProfilePage />
-                    </Layout>}
+                    {
+                        <Layout showHero={false}>
+                            <UserProfilePage />
+                        </Layout>
+                    }
                 />
                 <Route
                     path="/manage-restaurant"
