@@ -23,15 +23,13 @@ const ImageSection = () => {
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input {...field}
+                                <Input
+                                    {...field}
                                     type="file"
                                     accept=".jpg, .jpeg, .png"
                                     className="bg-white"
-                                    onChangeCapture={(event) => {
-                                        const target = event.target as HTMLInputElement;
-                                        field.onChange(
-                                            target.files ? target.files[0] : null
-                                        )
+                                    onChange={(event) => {
+                                        field.onChange(event.target.files ? event.target.files[0] : null);
                                     }}
                                 />
                             </FormControl>
