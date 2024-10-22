@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthCallback, Error, Home, UserProfilePage } from '@/pages';
 import { Layout } from '@/layouts';
 import { ProtectedRoute } from '@/auth';
+import { ManageRestaurantForm } from '@/forms';
 
 
 const AppRoutes = () => {
@@ -24,6 +25,16 @@ const AppRoutes = () => {
                     element=
                     {<Layout showHero={false}>
                         <UserProfilePage />
+                    </Layout>}
+                />
+                <Route
+                    path="/manage-restaurant"
+                    element=
+                    {<Layout showHero={false}>
+                        <ManageRestaurantForm
+                            onSave={() => { }}
+                            isLoading={false}
+                        />
                     </Layout>}
                 />
             </Route>
