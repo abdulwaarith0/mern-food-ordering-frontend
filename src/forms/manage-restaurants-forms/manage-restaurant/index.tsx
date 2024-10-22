@@ -28,7 +28,7 @@ type Props = {
 }
 
 
-const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
+const ManageRestaurantForm = ({ onSave }: Props) => {
     const form = useForm<restaurantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -37,7 +37,7 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
         },
     });
 
-    const onSubmit = (formDataJson: restaurantFormData) => {
+    const onSubmit = (_formDataJson: restaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
         onSave( new FormData);
 
