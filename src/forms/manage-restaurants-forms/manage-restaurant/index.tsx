@@ -1,8 +1,9 @@
-import { Form } from "@/components";
+import { Form, Separator } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import DetailsSection from "../details-section";
+import CuisinesSection from "../cuisines-section";
 
 
 const formSchema = z.object({
@@ -50,6 +51,9 @@ const ManageRestaurantForm = ({ onSave }: Props) => {
                 className="space-y-8 bg-gray-50 p-10 rounded-lg"
             >
                 <DetailsSection />
+                <Separator />
+                <CuisinesSection />
+
             </form>
         </Form>
     )
