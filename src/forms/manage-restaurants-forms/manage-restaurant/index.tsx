@@ -1,10 +1,12 @@
-import { Form, Separator } from "@/components";
+import { Button, Form, Separator } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import DetailsSection from "../details-section";
 import CuisinesSection from "../cuisines-section";
 import MenuSection from "../menu-section";
+import ImageSection from "../image-section";
+import { Loader2 } from "lucide-react";
 
 
 const formSchema = z.object({
@@ -30,7 +32,7 @@ type Props = {
 }
 
 
-const ManageRestaurantForm = ({ onSave }: Props) => {
+const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
     const form = useForm<restaurantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -41,7 +43,7 @@ const ManageRestaurantForm = ({ onSave }: Props) => {
 
     const onSubmit = (_formDataJson: restaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
-        onSave( new FormData);
+        onSave(new FormData);
 
     }
 
@@ -56,6 +58,25 @@ const ManageRestaurantForm = ({ onSave }: Props) => {
                 <CuisinesSection />
                 <Separator />
                 <MenuSection />
+                <Separator />
+                <ImageSection />
+                <Separator />
+
+                {/* {isLoading ? <LoadingButton /> :
+                    <Button type="submit">
+                        Submit
+                    </Button>
+                } */}
+
+                {isLoading ?
+                    <div className="flex justify-center">
+                        <Loader2 className="animate-spin" />
+                    </div> :
+                    <Button type="submit">
+                        Submit
+                    </Button>
+                }
+
 
             </form>
         </Form>

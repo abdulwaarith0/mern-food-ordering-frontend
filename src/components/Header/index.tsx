@@ -8,7 +8,11 @@ const Header = () => {
             <div className="container mx-auto flex justify-between items-center">
                 <Link to="/"
                     className="text-3xl font-bold tracking-tight text-orange-500">
-                        MernEats.com
+                    MernEats.com
+                </Link>
+                <Link to="/"
+                    className="text-xl font-bold tracking-tight hover:text-orange-500 space-x-2">
+                    Home
                 </Link>
                 <div className="md:hidden">
                     <MobileNav />
