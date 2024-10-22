@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import DetailsSection from "../details-section";
 import CuisinesSection from "../cuisines-section";
+import MenuSection from "../menu-section";
 
 
 const formSchema = z.object({
@@ -53,6 +54,8 @@ const ManageRestaurantForm = ({ onSave }: Props) => {
                 <DetailsSection />
                 <Separator />
                 <CuisinesSection />
+                <Separator />
+                <MenuSection />
 
             </form>
         </Form>
