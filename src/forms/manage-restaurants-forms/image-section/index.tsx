@@ -28,8 +28,13 @@ const ImageSection = () => {
                                     type="file"
                                     accept=".jpg, .jpeg, .png"
                                     className="bg-white"
-                                    onChange={(event) => {
-                                        field.onChange(event.target.files ? event.target.files[0] : null);
+                                    onChangeCapture={(event) => {
+                                        const target = event.target as HTMLInputElement;
+                                        if (target.files && target.files[0]) {
+                                            field.onChange(target.files[0]); 
+                                        } else {
+                                            field.onChange(null);
+                                        }
                                     }}
                                 />
                             </FormControl>
