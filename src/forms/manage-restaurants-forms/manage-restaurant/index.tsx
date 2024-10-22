@@ -74,8 +74,10 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
             );
         });
 
-        if (_formDataJson.imageFile instanceof File) {
-            formData.append(`imageFile`, _formDataJson.imageFile);
+        if (_formDataJson.imageFile && _formDataJson.imageFile instanceof File) {
+            formData.append("imageFile", _formDataJson.imageFile);
+        } else {
+            console.error("Submitted data for imageFile is not an instance of File");
         }
 
         onSave(formData);

@@ -34,7 +34,7 @@ const ImageSection = () => {
                                 <Input
                                     {...field}
                                     type="file"
-                                    accept=".jpg, .jpeg, .png"
+                                    accept="image/*"
                                     className="bg-white"
                                     onChangeCapture={handleFileChange}
                                 />
