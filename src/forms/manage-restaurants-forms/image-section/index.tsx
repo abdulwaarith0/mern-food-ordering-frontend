@@ -3,7 +3,15 @@ import { useFormContext } from "react-hook-form";
 
 
 const ImageSection = () => {
-    const { control } = useFormContext();
+    const { control, setValue } = useFormContext();
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files[0]) {
+            setValue("imageFile", files[0], { shouldValidate: true });
+        }
+    };
+
 
     return (
         <div className="space-y-2">
@@ -28,14 +36,7 @@ const ImageSection = () => {
                                     type="file"
                                     accept=".jpg, .jpeg, .png"
                                     className="bg-white"
-                                    onChangeCapture={(event) => {
-                                        const target = event.target as HTMLInputElement;
-                                        if (target.files && target.files[0]) {
-                                            field.onChange(target.files[0]); 
-                                        } else {
-                                            field.onChange(null);
-                                        }
-                                    }}
+                                    onChangeCapture={handleFileChange}
                                 />
                             </FormControl>
                             <FormMessage />
