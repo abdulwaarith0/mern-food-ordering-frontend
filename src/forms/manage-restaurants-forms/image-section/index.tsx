@@ -20,20 +20,20 @@ const ImageSection = () => {
                 <FormField
                     control={control}
                     name="imageFile"
-                    render={({ field }) => (
+                    render={({ field: { onChange, onBlur, name, ref } }) => (
                         <FormItem>
                             <FormControl>
                                 <Input
-                                    {...field}
                                     type="file"
-                                    accept="image/jpg, image/jpeg, image/png"
+                                    accept=".jpg, .jpeg, .png"
                                     className="bg-white"
-                                    onChange={(event) =>
-                                        field.onChange(
-                                            event.target.files ?
-                                                event.target.files[0] : null
-                                        )
-                                    }
+                                    name={name}
+                                    ref={ref}
+                                    onBlur={onBlur}
+                                    onChange={(event) => {
+                                        const file = event.target.files ? event.target.files[0] : null;
+                                        onChange(file);
+                                    }}
                                 />
                             </FormControl>
                             <FormMessage />

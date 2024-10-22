@@ -38,7 +38,7 @@ const formSchema = z.object({
 
 })
 
-type restaurantFormData = z.infer<typeof formSchema>;
+type RestaurantFormData = z.infer<typeof formSchema>;
 
 type Props = {
     onSave: (restaurantFormData: FormData) => void;
@@ -47,7 +47,7 @@ type Props = {
 
 
 const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
-    const form = useForm<restaurantFormData>({
+    const form = useForm<RestaurantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             cuisines: [],
@@ -55,19 +55,19 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
         },
     });
 
-    const onSubmit = (_formDataJson: restaurantFormData) => {
+    const onSubmit = (formDataJson: RestaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
         const formData = new FormData();
 
-        formData.append("restaurantName", _formDataJson.restaurantName);
-        formData.append("city", _formDataJson.city);
-        formData.append("country", _formDataJson.country);
-        formData.append("deliveryPrice", _formDataJson.deliveryPrice.toString());
-        formData.append("estimatedDeliveryTime", _formDataJson.estimatedDeliveryTime.toString());
-        _formDataJson.cuisines.forEach((cuisine, index) => {
+        formData.append("restaurantName", formDataJson.restaurantName);
+        formData.append("city", formDataJson.city);
+        formData.append("country", formDataJson.country);
+        formData.append("deliveryPrice", formDataJson.deliveryPrice.toString());
+        formData.append("estimatedDeliveryTime", formDataJson.estimatedDeliveryTime.toString());
+        formDataJson.cuisines.forEach((cuisine, index) => {
             formData.append(`cuisines[${index}]`, cuisine);
         });
-        _formDataJson.menuItems.forEach((menuItem, index) => {
+        formDataJson.menuItems.forEach((menuItem, index) => {
             formData.append(`menuItems[${index}][name]`, menuItem.name);
             formData.append(
                 `menuItems[${index}][price]`,
@@ -75,10 +75,10 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
             );
         });
 
-        if (_formDataJson.imageFile instanceof File) {
-            formData.append("imageFile", _formDataJson.imageFile);
-        } else if (_formDataJson.imageUrl) {
-            formData.append("imageUrl", _formDataJson.imageUrl);
+        if (formDataJson.imageFile instanceof File) {
+            formData.append("imageFile", formDataJson.imageFile);
+        } else if (formDataJson.imageUrl) {
+            formData.append("imageUrl", formDataJson.imageUrl);
         } else {
             console.error("No valid image input provided.");
         }
