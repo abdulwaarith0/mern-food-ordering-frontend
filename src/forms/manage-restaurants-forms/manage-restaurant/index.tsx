@@ -13,15 +13,25 @@ const formSchema = z.object({
     restaurantName: z.string().min(1, { message: "Restaurant name is required" }),
     city: z.string().min(1, { message: "City is required" }),
     country: z.string().min(1, { message: "Country is required" }),
-    deliverPrice: z.coerce.number().min(1, { message: "Delivery price is required" }),
-    estimatedDeliveryTime: z.coerce.number().min(1, { message: "Estimated delivery time is required" }),
-    cuisines: z.array(z.string()).min(1, { message: "At least one cuisine is required" }),
-    menuItems: z.array(z.object({
-        name: z.string().min(1, { message: " name is required" }),
-        price: z.coerce.number().min(1, { message: " price is required" }),
-    })).min(1, { message: "At least one menu item is required" }),
-    imageFile: z.instanceof(File).refine((file) => file.size <= 1024 * 1024 * 5, { message: "Image must be less than 5MB" }),
-
+    deliveryPrice: z.coerce.number({
+        required_error: "delivery price is required",
+        invalid_type_error: "must be a valid number",
+    }),
+    estimatedDeliveryTime: z.coerce.number({
+        required_error: "estimated delivery time is required",
+        invalid_type_error: "must be a valid number",
+    }),
+    cuisines: z.array(z.string()).nonempty({
+        message: "please select at least one item",
+    }),
+    menuItems: z.array(
+        z.object({
+            name: z.string().min(1, "name is required"),
+            price: z.coerce.number().min(1, "price is required"),
+        })
+    ),
+    imageUrl: z.string().optional(),
+    imageFile: z.instanceof(File, { message: "image is required" }).optional(),
 });
 
 type restaurantFormData = z.infer<typeof formSchema>;
@@ -43,7 +53,28 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
 
     const onSubmit = (_formDataJson: restaurantFormData) => {
         /// TODO: convert formDataJson to FormData object
-        onSave(new FormData);
+        const formData = new FormData();
+        formData.append("restaurantName", _formDataJson.restaurantName);
+        formData.append("city", _formDataJson.city);
+        formData.append("country", _formDataJson.country);
+        formData.append("deliveryPrice", _formDataJson.deliveryPrice.toString());
+        formData.append("estimatedDeliveryTime", _formDataJson.estimatedDeliveryTime.toString());
+        _formDataJson.cuisines.forEach((cuisine, index) => {
+            formData.append(`cuisines[${index}]`, cuisine);
+        });
+        _formDataJson.menuItems.forEach((menuItem, index) => {
+            formData.append(`menuItems[${index}][name]`, menuItem.name);
+            formData.append(
+                `menuItems[${index}][price]`,
+                (menuItem.price * 100).toString()
+            );
+        });
+
+        if (_formDataJson.imageFile) {
+            formData.append(`imageFile`, _formDataJson.imageFile);
+        }
+
+        onSave(formData);
 
     }
 

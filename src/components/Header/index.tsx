@@ -11,7 +11,7 @@ const Header = () => {
                     MernEats.com
                 </Link>
                 <Link to="/"
-                    className="text-xl font-bold tracking-tight hover:text-orange-500 space-x-2">
+                    className="text-xl font-bold tracking-tight hover:text-orange-500">
                     Home
                 </Link>
                 <div className="md:hidden">
