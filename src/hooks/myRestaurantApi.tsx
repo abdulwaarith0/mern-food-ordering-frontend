@@ -1,10 +1,10 @@
 import { API_BASE_URL } from "@/constants";
 import { Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 
-
+// Create a new restaurant
 export const useCreateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
@@ -54,3 +54,44 @@ export const useCreateMyRestaurant = () => {
   return { createRestaurant, isLoading };
 }
 
+
+// Get current user's restaurant
+export const useGetMyRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getMyRestaurantRequest = async (): Promise<Restaurant> => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+
+      const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to get restaurant");
+      }
+
+      const result = await response.json();
+      return result.data;
+
+    } catch (error) {
+      console.error("Error getting my restaurant:", error);
+      throw error;
+    }
+  }
+
+  const { data: restaurant, isLoading, error } = useQuery({
+    queryKey: ["fetchMyRestaurant"],
+    queryFn: getMyRestaurantRequest,
+  });
+
+  if (error) {
+    toast.error("Failed to load restaurant");
+  }
+
+  return { restaurant, isLoading };
+}

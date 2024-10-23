@@ -72,7 +72,7 @@ export const useGetMyUser = () => {
     const { data: currentUser, isLoading, error } = useQuery("fetchCurrentUser", getMyUserRequest);
 
     if (error) {
-        toast.error(error.toString());
+        toast.error("Failed to get user");
     }
 
     return { currentUser, isLoading, error };

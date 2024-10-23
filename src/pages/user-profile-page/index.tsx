@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button, LoadingButton } from "@/components";
 import { UserProfileForm } from "@/forms";
 import { useUpdateMyUser, useGetMyUser } from "@/hooks";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +10,8 @@ const UserProfilePage = () => {
     const navigate = useNavigate();
 
     if (isGetting) {
-        return <span className="text-2xl font-bold ">
-            Loading...
+        return <span className="flex justify-center items-center h-screen">
+            <LoadingButton />
         </span>;
     }
 

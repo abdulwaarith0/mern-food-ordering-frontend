@@ -6,6 +6,8 @@ import DetailsSection from "../details-section";
 import CuisinesSection from "../cuisines-section";
 import MenuSection from "../menu-section";
 import ImageSection from "../image-section";
+import { Restaurant } from "@/types";
+import { useEffect } from "react";
 
 
 const formSchema = z.object({
@@ -40,24 +42,48 @@ const formSchema = z.object({
 type RestaurantFormData = z.infer<typeof formSchema>;
 
 type Props = {
+    restaurant?: Restaurant;
     onSave: (restaurantFormData: FormData) => void;
     isLoading: boolean;
 }
 
 
-const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
+const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     const form = useForm<RestaurantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            restaurantName: '', 
-            city: '',            
-            country: '', 
+            restaurantName: '',
+            city: '',
+            country: '',
             deliveryPrice: 0,
             estimatedDeliveryTime: 0,
             cuisines: [],
             menuItems: [{ name: "", price: 0 }],
         },
     });
+
+    useEffect(() => {
+        if (!restaurant) {
+            return;
+        }
+
+        // price lowest domination of 100 = 100pence == 1GBP
+        const deliveryPriceFormatted =
+            parseInt((restaurant.deliveryPrice / 100).toFixed(2));
+
+        const menuItemsFormatted = restaurant.menuItems.map((item) => ({
+            ...item,
+            price: parseInt((item.price / 100).toFixed(2)),
+        }));
+
+        const updatedRestaurant = {
+            ...restaurant,
+            deliveryPrice: deliveryPriceFormatted,
+            menuItems: menuItemsFormatted,
+        };
+
+        form.reset(updatedRestaurant);
+    }, [restaurant, form]);
 
     const onSubmit = (formDataJson: RestaurantFormData) => {
 
@@ -104,7 +130,6 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
                 <MenuSection />
                 <Separator />
                 <ImageSection />
-                <Separator />
 
                 {isLoading ? <LoadingButton /> :
                     <Button type="submit">
