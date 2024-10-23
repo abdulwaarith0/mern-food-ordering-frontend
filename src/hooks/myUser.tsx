@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from 'react';
 import { useMutation, useQuery } from "react-query";
 import { API_BASE_URL } from "../constants";

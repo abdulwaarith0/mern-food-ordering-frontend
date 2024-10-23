@@ -49,15 +49,17 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
     const form = useForm<RestaurantFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            restaurantName: '', 
+            city: '',            
+            country: '', 
+            deliveryPrice: 0,
+            estimatedDeliveryTime: 0,
             cuisines: [],
             menuItems: [{ name: "", price: 0 }],
         },
     });
 
     const onSubmit = (formDataJson: RestaurantFormData) => {
-        console.log("Onsubmit function called");
-
-        console.log(form.formState.errors);
 
         const formData = new FormData();
 

@@ -24,6 +24,7 @@ const CuisinesSection = () => {
                             {
                                 cuisineList.map((cuisineItem) => (
                                     <CuisineCheckbox
+                                        key={cuisineItem}
                                         cuisine={cuisineItem}
                                         field={field}
                                     />

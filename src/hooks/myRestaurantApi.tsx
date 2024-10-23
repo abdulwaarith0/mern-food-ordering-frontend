@@ -10,7 +10,6 @@ export const useCreateMyRestaurant = () => {
 
   const createMyRestaurantRequest =
     async (restaurantFormData: FormData): Promise<Restaurant> => {
-      console.log("createMyRestaurantRequest function called");
 
       try {
         const accessToken = await getAccessTokenSilently();
@@ -19,7 +18,6 @@ export const useCreateMyRestaurant = () => {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "multipart/form-data",
           },
           body: restaurantFormData,
         });
