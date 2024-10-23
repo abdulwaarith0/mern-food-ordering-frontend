@@ -10,6 +10,7 @@ export const useCreateMyRestaurant = () => {
 
   const createMyRestaurantRequest =
     async (restaurantFormData: FormData): Promise<Restaurant> => {
+      console.log("createMyRestaurantRequest function called");
 
       try {
         const accessToken = await getAccessTokenSilently();
