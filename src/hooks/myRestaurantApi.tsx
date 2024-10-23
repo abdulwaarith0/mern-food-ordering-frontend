@@ -1,41 +1,44 @@
 import { API_BASE_URL } from "@/constants";
 import { Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "sonner";
+
 
 // Create a new restaurant
 export const useCreateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
 
-  const createMyRestaurantRequest =
-    async (restaurantFormData: FormData): Promise<Restaurant> => {
+  const createMyRestaurantRequest = useCallback(async (restaurantFormData: FormData): Promise<Restaurant> => {
 
-      try {
-        const accessToken = await getAccessTokenSilently();
+    try {
+      const accessToken = await getAccessTokenSilently();
 
-        const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: restaurantFormData,
-        });
+      const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: restaurantFormData,
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to create restaurant");
-        }
-
-        const data = await response.json();
-        return data;
-
-      } catch (error) {
-        console.error("Error creating my restaurant:", error);
-        throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create restaurant");
       }
+
+      const data = await response.json();
+      return data;
+
+    } catch (error) {
+      console.error("Error creating my restaurant:", error);
+      throw error;
     }
+  },
+    [getAccessTokenSilently]
+  );
 
   const { mutate: createRestaurant,
     isLoading,
@@ -58,8 +61,9 @@ export const useCreateMyRestaurant = () => {
 // Get current user's restaurant
 export const useGetMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  const getMyRestaurantRequest = async (): Promise<Restaurant> => {
+  const getMyRestaurantRequest = useCallback(async (): Promise<Restaurant> => {
     try {
       const accessToken = await getAccessTokenSilently();
 
@@ -87,7 +91,7 @@ export const useGetMyRestaurant = () => {
       console.error("Error getting my restaurant:", error);
       throw error;
     }
-  }
+  }, [getAccessTokenSilently]);
 
   const { data: restaurant, isLoading, error, isSuccess } = useQuery({
     queryKey: ["fetchMyRestaurant"],
@@ -96,12 +100,67 @@ export const useGetMyRestaurant = () => {
 
   if (error instanceof Error && error.message === "Failed to get restaurant") {
     toast.info("You haven't created a restaurant yet.");
+  }
+  if (isSuccess && isInitialLoading) {
+    toast.success("Restaurant data is successfully loaded");
   } else if (isSuccess) {
-    toast.success("Restaurant loaded!");
-  } else if (error instanceof Error) {
+    setIsInitialLoading(false);
+  }
+
+  if (error instanceof Error) {
     toast.error(error.message);
   }
 
-
   return { restaurant, isLoading };
+}
+
+
+// Update current user's restaurant
+export const useUpdateMyRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const queryClient = useQueryClient();
+
+  const updateMyRestaurantRequest = useCallback(async (restaurantFormData: FormData): Promise<Restaurant> => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+
+      const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: restaurantFormData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update restaurant");
+      }
+
+      const result = await response.json();
+      return result.data;
+
+    } catch (error) {
+      console.error("Error updating my restaurant:", error);
+      throw error;
+    }
+  }, [getAccessTokenSilently]);
+
+
+  const { mutate: updateRestaurant,
+    isLoading,
+    error,
+    isSuccess
+  } = useMutation(updateMyRestaurantRequest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("fetchMyRestaurant").then(() => {
+        toast.success("Restaurant successfully updated!");
+      });
+    },
+    onError: () => {
+      toast.error("Failed to update restaurant");
+    }
+  });
+
+  return { updateRestaurant, isLoading, isSuccess, error };
 }
