@@ -56,13 +56,12 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
     });
 
     const onSubmit = (formDataJson: RestaurantFormData) => {
-        /// TODO: convert formDataJson to FormData object
         const formData = new FormData();
 
         formData.append("restaurantName", formDataJson.restaurantName);
         formData.append("city", formDataJson.city);
         formData.append("country", formDataJson.country);
-        formData.append("deliveryPrice", formDataJson.deliveryPrice.toString());
+        formData.append("deliveryPrice", (formDataJson.deliveryPrice * 100).toString());
         formData.append("estimatedDeliveryTime", formDataJson.estimatedDeliveryTime.toString());
         formDataJson.cuisines.forEach((cuisine, index) => {
             formData.append(`cuisines[${index}]`, cuisine);
@@ -116,7 +115,6 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
                         Submit
                     </Button>
                 }
-
 
             </form>
         </Form>

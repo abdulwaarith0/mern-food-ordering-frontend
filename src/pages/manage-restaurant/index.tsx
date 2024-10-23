@@ -1,12 +1,15 @@
 import { ManageRestaurantForm } from "@/forms";
+import { useCreateMyRestaurant } from "@/hooks";
 
 
 
 const ManageRestaurantPage = () => {
+    const { createRestaurant, isLoading } = useCreateMyRestaurant();
+
     return (
         <ManageRestaurantForm
-            onSave={() => { }}
-            isLoading={false}
+            onSave={createRestaurant}
+            isLoading={isLoading}
         />
     )
 }
