@@ -55,6 +55,8 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
     });
 
     const onSubmit = (formDataJson: RestaurantFormData) => {
+        console.log("Onsubmit function called");
+
         const formData = new FormData();
 
         formData.append("restaurantName", formDataJson.restaurantName);
