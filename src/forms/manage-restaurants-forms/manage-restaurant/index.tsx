@@ -1,4 +1,4 @@
-import { Button, Form, Separator } from "@/components";
+import { Button, Form, LoadingButton, Separator } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -6,7 +6,6 @@ import DetailsSection from "../details-section";
 import CuisinesSection from "../cuisines-section";
 import MenuSection from "../menu-section";
 import ImageSection from "../image-section";
-import { Loader2 } from "lucide-react";
 
 
 const formSchema = z.object({
@@ -32,9 +31,9 @@ const formSchema = z.object({
     ),
     imageUrl: z.string().optional(),
     imageFile: z.optional(z.instanceof(File)),
-    }).refine((data) => data.imageUrl || data.imageFile, {
-        message: "Either image URL or image File must be provided",
-        path: ["imageFile"],
+}).refine((data) => data.imageUrl || data.imageFile, {
+    message: "Either image URL or image File must be provided",
+    path: ["imageFile"],
 
 })
 
@@ -101,21 +100,11 @@ const ManageRestaurantForm = ({ onSave, isLoading }: Props) => {
                 <ImageSection />
                 <Separator />
 
-                {/* {isLoading ? <LoadingButton /> :
-                    <Button type="submit">
-                        Submit
-                    </Button>
-                } */}
-
-                {isLoading ?
-                    <div className="flex justify-center">
-                        <Loader2 className="animate-spin" />
-                    </div> :
+                {isLoading ? <LoadingButton /> :
                     <Button type="submit">
                         Submit
                     </Button>
                 }
-
             </form>
         </Form>
     )

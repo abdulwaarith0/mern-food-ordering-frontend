@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 
 const ImageSection = () => {
-    const { control, register } = useFormContext();
+    const { control } = useFormContext();
 
     return (
         <div className="space-y-2">
@@ -40,16 +40,6 @@ const ImageSection = () => {
                         </FormItem>
                     )}
                 />
-                <FormItem>
-                    <FormControl>
-                        <Input
-                            {...register("imageUrl")}
-                            type="text"
-                            placeholder="Or enter an image URL"
-                            className="bg-white"
-                        />
-                    </FormControl>
-                </FormItem>
             </div>
         </div>
     )
