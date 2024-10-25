@@ -1,3 +1,5 @@
+import { IResponseData } from "./responseData";
+
 export interface ISector {
 	auth0Id: string;
 	email: string;
@@ -34,4 +36,20 @@ export interface Restaurant {
 	menuItems: MenuItem[];
 	imageUrl: string;
 	lastUpdated: string;
+}
+
+
+export interface IRestaurant {
+	restaurantName: string;
+	cuisines: string[];
+	city: string;
+}
+
+export interface ISearchRestaurantResponse {
+	restaurants: IResponseData<IRestaurant[]>;
+	pagination: {
+		total: number;
+		page: number;
+		pages: number;
+	}
 }

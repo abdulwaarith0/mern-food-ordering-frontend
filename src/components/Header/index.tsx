@@ -10,10 +10,6 @@ const Header = () => {
                     className="text-3xl font-bold tracking-tight text-orange-500">
                     MernEats.com
                 </Link>
-                <Link to="/"
-                    className="text-xl font-bold tracking-tight hover:text-orange-500">
-                    Home
-                </Link>
                 <div className="md:hidden">
                     <MobileNav />
                 </div>

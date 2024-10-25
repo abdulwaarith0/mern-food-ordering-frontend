@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthCallback, Error, Home, ManageRestaurantPage, UserProfilePage } from '@/pages';
+import { AuthCallback, Error, Home, ManageRestaurantPage, SearchPage, UserProfilePage } from '@/pages';
 import { Layout } from '@/layouts';
 import { ProtectedRoute } from '@/auth';
 
@@ -17,6 +17,11 @@ const AppRoutes = () => {
             />
             <Route path="/auth-callback"
                 element={<AuthCallback />}
+            />
+            <Route path="/search/:city"
+                element={<Layout showHero={false}>
+                    <SearchPage />
+                </Layout>}
             />
 
             <Route element={<ProtectedRoute />}>

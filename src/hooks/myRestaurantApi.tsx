@@ -98,11 +98,11 @@ export const useGetMyRestaurant = () => {
     queryFn: getMyRestaurantRequest,
   });
 
-  if (error instanceof Error && error.message === "Failed to get restaurant") {
+  if (error instanceof Error && error.message === "Failed to load restaurant") {
     toast.info("You haven't created a restaurant yet.");
   }
   if (isSuccess && isInitialLoading) {
-    toast.success("Restaurant data is successfully loaded");
+    toast.success("Restaurant data loaded");
   } else if (isSuccess) {
     setIsInitialLoading(false);
   }

@@ -7,3 +7,4 @@ export { default as Footer } from "./footer";
 export { default as UsernameMenu } from "./username";
 export { default as MobileNavLinks } from "./mobileNavLinks";
 export { default as LoadingButton } from "./loading";
+export { default as SearchBar } from "./search-bar";
