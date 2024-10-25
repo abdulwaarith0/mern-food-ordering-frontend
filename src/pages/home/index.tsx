@@ -12,7 +12,6 @@ const Home = () => {
         navigate({
             pathname: `/search/${searchFormValues.searchQuery}`,
         });
-        console.log(searchFormValues);
     } 
 
     return (

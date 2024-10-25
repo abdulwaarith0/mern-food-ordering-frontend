@@ -1,5 +1,3 @@
-import { IResponseData } from "./responseData";
-
 export interface ISector {
 	auth0Id: string;
 	email: string;
@@ -39,17 +37,12 @@ export interface Restaurant {
 }
 
 
-export interface IRestaurant {
-	restaurantName: string;
-	cuisines: string[];
-	city: string;
-}
-
-export interface ISearchRestaurantResponse {
-	restaurants: IResponseData<IRestaurant[]>;
+export interface IRestaurantSearchResponse {
+	data: Restaurant[];
 	pagination: {
 		total: number;
 		page: number;
 		pages: number;
 	}
 }
+
