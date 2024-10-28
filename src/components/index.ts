@@ -10,3 +10,4 @@ export { default as LoadingButton } from "./loading";
 export { default as SearchBar } from "./search-bar";
 export { default as SearchResultInfo } from "./search-result-info";
 export { default as SearchResultCard } from "./search-result-card";
+export { default as PaginationSelector } from "./pagination-selector";

@@ -13,6 +13,7 @@ export const useSearchRestaurant = (
         Promise<IRestaurantSearchResponse> => {
         const params = new URLSearchParams();
         params.set("searchQuery", searchState.searchQuery);
+        params.set("page", searchState.page.toString());
 
         try {
 
@@ -31,8 +32,8 @@ export const useSearchRestaurant = (
             console.error("Error searching restaurant:", error);
             throw error;
         }
-    }, [searchState.searchQuery, city]);
-    
+    }, [searchState.page, searchState.searchQuery, city]);
+
 
     const { data: results, isLoading } = useQuery({
         queryKey: ["searchRestaurant", searchState],
