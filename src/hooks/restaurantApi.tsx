@@ -14,6 +14,7 @@ export const useSearchRestaurant = (
         const params = new URLSearchParams();
         params.set("searchQuery", searchState.searchQuery);
         params.set("page", searchState.page.toString());
+        params.set("selectedCuisines", searchState.selectedCuisines.join(","));
 
         try {
 
@@ -32,7 +33,7 @@ export const useSearchRestaurant = (
             console.error("Error searching restaurant:", error);
             throw error;
         }
-    }, [searchState.page, searchState.searchQuery, city]);
+    }, [searchState.page, searchState.searchQuery, searchState.selectedCuisines, city]);
 
 
     const { data: results, isLoading } = useQuery({
