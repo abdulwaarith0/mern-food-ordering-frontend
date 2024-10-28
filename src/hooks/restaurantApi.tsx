@@ -1,22 +1,24 @@
 import { API_BASE_URL } from "@/constants";
+import { SearchState } from "@/pages/search-page";
 import { IRestaurantSearchResponse } from "@/types";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 
 
-export const useSearchRestaurant = (city?: string) => {
-    const { getAccessTokenSilently } = useAuth0();
+export const useSearchRestaurant = (
+    searchState: SearchState,
+    city?: string) => {
 
-    const createSearchRequest = useCallback(async (): Promise<IRestaurantSearchResponse> => {
+    const createSearchRequest = useCallback(async ():
+        Promise<IRestaurantSearchResponse> => {
+        const params = new URLSearchParams();
+        params.set("searchQuery", searchState.searchQuery);
+
         try {
-            const accessToken = await getAccessTokenSilently();
 
-            const response = await fetch(`${API_BASE_URL}/api/restaurant/search/${city}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
+            const response = await
+                fetch(`${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
+                );
 
             if (!response.ok) {
                 throw new Error("Failed to GET restaurant");
@@ -29,10 +31,11 @@ export const useSearchRestaurant = (city?: string) => {
             console.error("Error searching restaurant:", error);
             throw error;
         }
-    }, [getAccessTokenSilently]);
+    }, [searchState.searchQuery, city]);
+    
 
     const { data: results, isLoading } = useQuery({
-        queryKey: ["searchRestaurant", city],
+        queryKey: ["searchRestaurant", searchState],
         queryFn: createSearchRequest,
         enabled: !!city,
     })
