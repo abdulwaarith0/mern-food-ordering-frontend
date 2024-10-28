@@ -1,4 +1,4 @@
-import { LoadingButton, SearchBar, SearchResultCard, SearchResultInfo, PaginationSelector, CuisineFilter } from "@/components";
+import { LoadingButton, SearchBar, SearchResultCard, SearchResultInfo, PaginationSelector, CuisineFilter, SortOptionDropdown } from "@/components";
 import { SearchForm } from "@/components/search-bar";
 import { useSearchRestaurant } from "@/hooks";
 import { useState } from "react";
@@ -8,6 +8,7 @@ export type SearchState = {
     searchQuery: string;
     page: number;
     selectedCuisines: string[];
+    sortOption: string;
 }
 
 const SearchPage = () => {
@@ -15,10 +16,23 @@ const SearchPage = () => {
     const [searchState, setSearchState] = useState<SearchState>({
         searchQuery: "",
         page: 1,
-        selectedCuisines: []
+        selectedCuisines: [],
+        sortOption: "bestMatch"
     });
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const { results, isLoading } = useSearchRestaurant(searchState, city);
+
+
+    const setSortOption = (sortOption: string) => {
+        setSearchState((prevState) => {
+            const newState = {
+                ...prevState,
+                sortOption,
+                page: 1
+            };
+            return newState;
+        });
+    }
 
     const setSearchQuery = (searchFormData: SearchForm) => {
         setSearchState((prevState) => ({
@@ -79,7 +93,13 @@ const SearchPage = () => {
                     onSubmit={setSearchQuery}
                     placeHolder="Search by Cuisine or Restaurant name"
                     onReset={resetSearch} />
-                <SearchResultInfo total={results.pagination.total} city={city} />
+                <div className="flex justify-between flex-col gap-3 lg:flex-row">
+                    <SearchResultInfo total={results.pagination.total} city={city} />
+                    <SortOptionDropdown
+                        onChange={(value) => setSortOption(value)}
+                        sortOption={searchState.sortOption}
+                    />
+                </div>
                 {results.data.map((restaurant) => (
                     <SearchResultCard
                         restaurant={restaurant}

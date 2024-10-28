@@ -12,3 +12,4 @@ export { default as SearchResultInfo } from "./search-result-info";
 export { default as SearchResultCard } from "./search-result-card";
 export { default as PaginationSelector } from "./pagination-selector";
 export { default as CuisineFilter } from "./cuisine-filter";
+export { default as SortOptionDropdown } from "./sort-option-dropdown";

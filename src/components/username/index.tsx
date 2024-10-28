@@ -32,7 +32,11 @@ const UsernameMenu = () => {
                 <DropdownMenuItem>
                     <Button variant="ghost"
                         className="flex flex-1 font-bold bg-orange-500"
-                        onClick={async () => await logout()}>
+                        onClick={async () => await logout({
+                            logoutParams: {
+                                returnTo: `${window.location.origin}`,
+                            },
+                        })}>
                         Log Out
                     </Button>
                 </DropdownMenuItem>
