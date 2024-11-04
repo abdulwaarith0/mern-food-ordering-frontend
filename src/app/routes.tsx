@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthCallback, Error, Home, ManageRestaurantPage, SearchPage, UserProfilePage } from '@/pages';
+import { AuthCallback, DetailPage, Error, Home, ManageRestaurantPage, SearchPage, UserProfilePage } from '@/pages';
 import { Layout } from '@/layouts';
 import { ProtectedRoute } from '@/auth';
 
@@ -21,6 +21,11 @@ const AppRoutes = () => {
             <Route path="/search/:city"
                 element={<Layout showHero={false}>
                     <SearchPage />
+                </Layout>}
+            />
+            <Route path="/detail/:restaurantId"
+                element={<Layout showHero={false}> 
+                    <DetailPage />
                 </Layout>}
             />
 

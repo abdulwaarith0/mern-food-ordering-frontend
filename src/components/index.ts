@@ -13,3 +13,5 @@ export { default as SearchResultCard } from "./search-result-card";
 export { default as PaginationSelector } from "./pagination-selector";
 export { default as CuisineFilter } from "./cuisine-filter";
 export { default as SortOptionDropdown } from "./sort-option-dropdown";
+export { default as RestaurantInfo } from "./restaurant-info";
+export { default as MenuItem } from "./menu-Item";

@@ -17,7 +17,7 @@ export interface User {
 }
 
 export interface MenuItem {
-	id: string;
+	_id: string;
 	name: string;
 	price: number;
 }
@@ -35,7 +35,6 @@ export interface Restaurant {
 	imageUrl: string;
 	lastUpdated: string;
 }
-
 
 export interface IRestaurantSearchResponse {
 	data: Restaurant[];
