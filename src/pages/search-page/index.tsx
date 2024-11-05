@@ -70,7 +70,7 @@ const SearchPage = () => {
             <LoadingButton />
         </span>
     } else if (!results?.data || !city) {
-        return <span>No results found</span>
+        return <span>No restaurant found in {city}</span>
     }
 
 

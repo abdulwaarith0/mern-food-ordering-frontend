@@ -15,3 +15,4 @@ export { default as CuisineFilter } from "./cuisine-filter";
 export { default as SortOptionDropdown } from "./sort-option-dropdown";
 export { default as RestaurantInfo } from "./restaurant-info";
 export { default as MenuItem } from "./menu-Item";
+export { default as OrderSummary } from "./order-summary";
