@@ -7,6 +7,22 @@ export interface ISector {
 	country: string;
 }
 
+export interface ICheckoutSession {
+	cartItems: {
+		menuItemId: string;
+		name: string;
+		quantity: string;
+	}[];
+	deliveryDetails: {
+		email: string;
+		name: string;
+		addressLine1: string;
+		city: string;
+		country: string;
+	};
+	restaurantId: string;
+}
+
 export interface User {
 	_id: string;
 	email: string;

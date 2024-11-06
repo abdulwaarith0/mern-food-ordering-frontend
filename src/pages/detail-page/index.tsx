@@ -1,8 +1,8 @@
 import { AspectRatio, LoadingButton, RestaurantInfo, MenuItem, Card, OrderSummary, CardFooter, CheckoutButton } from "@/components";
-import { useGetRestaurant } from "@/hooks";
+import { useCreateCheckoutSession, useGetRestaurant } from "@/hooks";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { MenuItem as MenuItemType } from "@/types";
+import { ICheckoutSession, MenuItem as MenuItemType } from "@/types";
 import { UserFormData } from "@/forms";
 
 export type CartItem = {
@@ -20,6 +20,8 @@ const DetailPage = () => {
             sessionStorage.getItem(`cartItems-${restaurantId}`);
         return storedCartItems ? JSON.parse(storedCartItems) : [];
     });
+    const { createCheckoutSession, isLoading: isCreatingCheckoutSession } = useCreateCheckoutSession();
+
 
     const addToCart = (menuItem: MenuItemType) => {
         setCartItems((prevCartItems) => {
@@ -63,9 +65,27 @@ const DetailPage = () => {
         return <LoadingButton />;
     }
 
-    const onCheckout = (userFormData: UserFormData) => {
-        console.log("userFormData", userFormData);
+    const onCheckout = async (userFormData: UserFormData) => {
+        const checkoutData: ICheckoutSession = {
+            cartItems: cartItems.map((item) => ({
+                menuItemId: item._id,
+                name: item.name,
+                quantity: item.quantity.toString(),
+            })),
+            deliveryDetails: {
+                email: userFormData.email as string,
+                name: userFormData.name,
+                addressLine1: userFormData.addressLine1,
+                city: userFormData.city,
+                country: userFormData.country,
+            },
+            restaurantId: restaurant._id,
+        }
+
+        const data = await createCheckoutSession(checkoutData);
+        window.location.href = data.url;
     }
+
 
     return (
         <div className="flex flex-col gap-10">
@@ -97,6 +117,7 @@ const DetailPage = () => {
                             <CheckoutButton
                                 disabled={cartItems.length === 0}
                                 onCheckout={onCheckout}
+                                isLoading={isCreatingCheckoutSession}
                             />
                         </CardFooter>
                     </Card>

@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation } from "react-router-dom";
-import { Button, Dialog, DialogContent, DialogTrigger } from "../ui";
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui";
 import LoadingButton from "../loading";
 import { UserFormData, UserProfileForm } from "@/forms";
 import { useGetMyUser } from "@/hooks";
@@ -8,9 +8,10 @@ import { useGetMyUser } from "@/hooks";
 type Props = {
     onCheckout: (userFormData: UserFormData) => void;
     disabled?: boolean;
+    isLoading?: boolean;
 }
 
-const CheckoutButton = ({ onCheckout, disabled }: Props) => {
+const CheckoutButton = ({ onCheckout, disabled, isLoading }: Props) => {
     const {
         isAuthenticated,
         isLoading: isAuthLoading,
@@ -39,7 +40,7 @@ const CheckoutButton = ({ onCheckout, disabled }: Props) => {
             </Button>
         )
     }
-    if (isAuthLoading || !currentUser) {
+    if (isAuthLoading || !currentUser || isLoading) {
         return <LoadingButton />
     }
 
@@ -53,11 +54,19 @@ const CheckoutButton = ({ onCheckout, disabled }: Props) => {
                 </Button>
             </DialogTrigger>
             <DialogContent
-                className="max-w-[425px] md:min-w-[700px] bg-gray-50">
+                className="max-w-[425px] md:min-w-[700px] bg-gray-50"
+                aria-describedby="checkout-description"
+            >
+                <DialogTitle style={{ visibility: 'hidden' }}>Checkout Details</DialogTitle>
+                <p className="text-xl text-gray-500 font-bold" id="checkout-description">
+                    Confirm your delivery details and proceed to payment.
+                </p>
                 <UserProfileForm
                     currentUser={currentUser}
                     onSave={onCheckout}
                     isLoading={isGetUserLoading}
+                    title="Confirm delivery details"
+                    buttonText="Continue to payment"
                 />
             </DialogContent>
         </Dialog>
