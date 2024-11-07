@@ -7,6 +7,35 @@ export interface ISector {
 	country: string;
 }
 
+export type OrderStatus =
+	| "placed"
+	| "paid"
+	| "inProgress"
+	| "outForDelivery"
+	| "delivered";
+
+export interface Order {
+	_id: string;
+	restaurant: Restaurant;
+	user: User;
+	cartItems: {
+		menuItemId: string;
+		name: string;
+		quantity: string;
+	}[];
+	deliveryDetails: {
+		email: string;
+		name: string;
+		addressLine1: string;
+		city: string;
+		country: string;
+	};
+	totalAmount: number;
+	status: OrderStatus;
+	restaurantId: string;
+	createdAt: string;
+}
+
 export interface ICheckoutSession {
 	cartItems: {
 		menuItemId: string;

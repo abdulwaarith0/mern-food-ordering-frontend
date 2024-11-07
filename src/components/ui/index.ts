@@ -12,3 +12,4 @@ export * from "./pagination";
 export * from "./card";
 export * from "./badge";
 export * from "./dialog";
+export * from "./progress"

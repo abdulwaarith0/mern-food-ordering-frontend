@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthCallback, DetailPage, Error, Home, ManageRestaurantPage, SearchPage, UserProfilePage } from '@/pages';
+import { AuthCallback, DetailPage, Error, Home, ManageRestaurantPage, OrderStatus, SearchPage, UserProfilePage } from '@/pages';
 import { Layout } from '@/layouts';
 import { ProtectedRoute } from '@/auth';
 
@@ -38,6 +38,12 @@ const AppRoutes = () => {
                             <UserProfilePage />
                         </Layout>
                     }
+                />
+                <Route
+                    path="/order-status"
+                    element={<Layout showHero={false}>
+                        <OrderStatus />
+                    </Layout>}
                 />
                 <Route
                     path="/manage-restaurant"
