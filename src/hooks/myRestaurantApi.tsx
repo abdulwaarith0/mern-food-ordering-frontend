@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@/constants";
-import { Restaurant } from "@/types";
+import { Order, Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -163,4 +163,44 @@ export const useUpdateMyRestaurant = () => {
   });
 
   return { updateRestaurant, isLoading, isSuccess, error };
+}
+
+
+// Get current user's restaurant orders
+export const useGetMyRestaurantOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getMyOrdersRequest = useCallback(async (): Promise<Order[]> => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+
+      const response = await fetch(`${API_BASE_URL}/api/my/restaurant/orders`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch orders");
+      }
+
+      const result = await response.json();
+      return result.data;
+
+    } catch (error) {
+      console.error("Error getting my restaurant orders:", error);
+      throw error;
+    }
+  }, [getAccessTokenSilently]);
+
+  const { data: orders, isLoading } = useQuery({
+    queryKey: ["fetchMyRestaurantOrders"],
+    queryFn: getMyOrdersRequest,
+  });
+
+  return { orders, isLoading };
+
 }

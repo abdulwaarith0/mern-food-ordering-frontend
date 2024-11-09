@@ -19,3 +19,4 @@ export { default as OrderSummary } from "./order-summary";
 export { default as CheckoutButton } from "./checkout";
 export { default as OrderStatusHeader } from "./order-status-header";
 export { default as OrderStatusDetail } from "./order-status-detail";
+export { default as OrderItemCard } from "./order-item-card";
