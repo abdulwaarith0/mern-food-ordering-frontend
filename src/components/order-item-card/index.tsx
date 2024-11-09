@@ -1,8 +1,9 @@
-import { Order } from "@/types"
+import { Order, OrderStatus } from "@/types"
 import { Badge, Card, CardContent, CardHeader, CardTitle, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui";
 import { Separator } from "@radix-ui/react-separator";
 import { ORDER_STATUS } from "@/config/order-status-config";
-
+import { useUpdateOrderStatus } from "@/hooks";
+import { useEffect, useState } from "react";
 
 
 type Props = {
@@ -10,7 +11,13 @@ type Props = {
 }
 
 const OrderItemCard = ({ order }: Props) => {
-    const { deliveryDetails, status, totalAmount, createdAt, cartItems } = order;
+    const { updateRestaurantStatus, isLoading } = useUpdateOrderStatus();
+    const { deliveryDetails, totalAmount, createdAt, cartItems } = order;
+    const [status, setStatus] = useState<OrderStatus>(order.status);
+
+    useEffect(() => {
+        setStatus(order.status);
+    }, [order.status]);
 
     const getTime = () => {
         return new Date(createdAt).toLocaleTimeString('en-US', {
@@ -18,6 +25,14 @@ const OrderItemCard = ({ order }: Props) => {
             minute: '2-digit',
             hour12: true
         }).toLowerCase();
+    }
+
+    const handleStatusChange = async (newStatus: OrderStatus) => {
+        await updateRestaurantStatus({
+            orderId: order._id as string,
+            status: newStatus
+        });
+        setStatus(newStatus);
     }
 
     return (
@@ -68,7 +83,14 @@ const OrderItemCard = ({ order }: Props) => {
                     <Label htmlFor="status">
                         What is the status of this order?
                     </Label>
-                    <Select value={status} >
+                    <Select
+                        value={status}
+                        disabled={isLoading}
+                        onValueChange={(value) =>
+                            handleStatusChange(
+                                value as OrderStatus
+                            )}
+                    >
                         <SelectTrigger id="status">
                             <SelectValue placeholder="status" />
                         </SelectTrigger>

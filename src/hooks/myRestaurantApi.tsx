@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@/constants";
-import { Order, Restaurant } from "@/types";
+import { Order, OrderStatus, Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -179,6 +179,7 @@ export const useGetMyRestaurantOrders = () => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
           },
         });
 
@@ -203,4 +204,57 @@ export const useGetMyRestaurantOrders = () => {
 
   return { orders, isLoading };
 
+}
+
+
+// Update order status (for restaurant)
+export const useUpdateOrderStatus = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateMyRestaurantOrder = useCallback(async ({
+    orderId,
+    status
+  }: { orderId: string; status: OrderStatus }): Promise<Order> => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+
+      const response = await fetch(`${API_BASE_URL}/api/my/restaurant/order/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update order status");
+      }
+
+      const result = await response.json();
+      return result.data;
+
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      throw error;
+    }
+  }, [getAccessTokenSilently]);
+
+  const { mutateAsync: updateRestaurantStatus,
+    isLoading,
+    error,
+    isSuccess,
+    reset
+  } = useMutation(updateMyRestaurantOrder, {
+    onSuccess: () => {
+      toast.success("Order status updated");
+    },
+    onError: () => {
+      toast.error("Failed to update order status");
+      reset();
+    }
+  });
+
+  return { updateRestaurantStatus, isLoading, error, isSuccess, reset };
 }
